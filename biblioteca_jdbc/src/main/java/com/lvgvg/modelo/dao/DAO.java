@@ -10,6 +10,7 @@
 
 package com.lvgvg.modelo.dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -21,35 +22,37 @@ public interface DAO<T> {
      * @param t Objeto a añadir a la base de datos.
      * @return Entero que simboliza el resultado de la operación:
      *         1 -> Realizado correctamente.
-     *         -1 -> No realizado correctamente.
+     * @throws SQLException Lanza una SQLException si no se ha podido crear el objeto en la BD.
      */
-    Integer create(T t);
+    Integer create(T t) throws SQLException;
 
     /**
      * @param id Id del objeto a leer de la base de datos.
      * @return Objeto leído de la base de datos.
+     * @throws SQLException Lanza una SQLException si no se ha podido leer el objeto de la BD.
      */
-    T read(Integer id);
+    T read(Integer id) throws SQLException;
 
     /**
-     * @return Arraylist con el contenido de la tabla de la base de datos del objeto
+     * @return Arraylist con el contenido de la tabla de la base de datos del objeto.
      *         T.
+     * @throws SQLException Lanza una SQLException si no se ha podido leer el contenido de la BD.
      */
-    ArrayList<T> readAll();
+    ArrayList<T> readAll() throws SQLException;
 
     /**
-     * @param id Id del objeto a actualizar en la base de datos.
+     * @param T Objeto a actualizar en la base de datos.
      * @return Entero que simboliza el resultado de la operación:
      *         1 -> Realizado correctamente.
-     *         -1 -> No realizado correctamente.
+     * @throws SQLException Lanza una SQLException si no se ha podido actualizar el objeto.
      */
-    Integer update(Integer id);
+    Integer update(T t) throws SQLException;
 
     /**
      * @param id Id del objeto a borrar en la base de datos.
      * @return Entero que simboliza el resultado de la operación:
      *         1 -> Realizado correctamente.
-     *         -1 -> No realizado correctamente.
+     * @throws SQLException Lanza una SQLException si no se ha podido borrar el objeto.
      */
-    Integer delete(Integer id);
+    Integer delete(T t) throws SQLException;
 }

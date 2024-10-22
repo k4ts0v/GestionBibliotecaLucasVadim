@@ -64,13 +64,13 @@ public class AutorDAO implements DAO<Autor> {
      *                      de la BD.
      */
     @Override
-    public Autor read(Integer id) throws SQLException {
+    public Autor read(Autor a) throws SQLException {
         try {
             PreparedStatement ps = conexion.prepareStatement(READ);
-            ps.setInt(1, id);
+            ps.setInt(1, a.getId());
             ResultSet rs = ps.executeQuery(READ);
-            Autor a = getAutorRS(rs);
-            return a;
+            Autor au = getAutorRS(rs);
+            return au;
         } catch (SQLException e) {
             throw new SQLException();
         }

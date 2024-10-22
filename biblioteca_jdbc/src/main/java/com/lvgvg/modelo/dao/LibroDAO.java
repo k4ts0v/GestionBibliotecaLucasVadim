@@ -61,13 +61,13 @@ public class LibroDAO implements DAO<Libro> {
      * @throws SQLException Lanza una SQLException si no se ha podido leer el libro de la BD.
      */
     @Override
-    public Libro read(Integer id) throws SQLException {
+    public Libro read(Libro l) throws SQLException {
         try  {
             PreparedStatement ps = conexion.prepareStatement(READ);
-            ps.setInt(1, id);
+            ps.setInt(1, l.getId());
             ResultSet rs = ps.executeQuery(READ);
-            Libro l = getLibroRS(rs);
-            return l;
+            Libro li = getLibroRS(rs);
+            return li;
         } catch (SQLException e) {
             throw new SQLException();
         }

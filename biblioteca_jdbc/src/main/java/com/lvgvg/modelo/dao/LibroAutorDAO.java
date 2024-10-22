@@ -28,7 +28,7 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
     private final String READ = "SELECT * FROM Libro_Autor WHERE id = ?";
     private final String READALL = "SELECT * FROM Libro_Autor";
     private final String UPDATE = "UPDATE Libro_Autor SET titulo=?, isbn=? WHERE id = ?";
-    private final String DELETE = "DELETE * FROM Libro_Autor WHERE id = ?";
+    private final String DELETE = "DELETE FROM Libro_Autor WHERE id = ?";
 
     /**
      * Este método añade un libroAutor a la BD.
@@ -46,10 +46,8 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
             ps.executeUpdate();
             return 1;
         } catch (SQLException e) {
-            e.printStackTrace();
-            //throw new SQLException();
+            throw new SQLException();
         }
-        return -1;
     }
 
     /**
@@ -65,8 +63,11 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
             ps.setInt(1, la.getIdLibro());
             ps.setInt(2, la.getIdAutor());
             ResultSet rs = ps.executeQuery();
-            LibroAutor l = getLibroAutorRS(rs);
-            return l;
+            if(rs.next()) {
+                return getLibroAutorRS(rs);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new SQLException();
         }

@@ -25,8 +25,8 @@ public class AutorDAO implements DAO<Autor> {
     private final String CREATE = "INSERT INTO Autor VALUES(?,?)";
     private final String READ = "SELECT * FROM Autor WHERE id = ?";
     private final String READALL = "SELECT * FROM Autor";
-    private final String UPDATE = "UPDATE Autor SET titulo=?, isbn=? WHERE id = ?";
-    private final String DELETE = "DELETE * FROM Autor WHERE id = ?";
+    private final String UPDATE = "UPDATE Autor SET nombre=? WHERE id = ?";
+    private final String DELETE = "DELETE FROM Autor WHERE id = ?";
 
     /**
      * Este método añade un autor a la BD.
@@ -50,8 +50,7 @@ public class AutorDAO implements DAO<Autor> {
                 return 1;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            // throw new SQLException();
+            throw new SQLException();
         }
         return -1;
     }
@@ -70,8 +69,11 @@ public class AutorDAO implements DAO<Autor> {
             PreparedStatement ps = conexion.prepareStatement(READ);
             ps.setInt(1, a.getId());
             ResultSet rs = ps.executeQuery();
-            Autor au = getAutorRS(rs);
-            return au;
+            if(rs.next()) {
+                return getAutorRS(rs);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new SQLException();
         }
@@ -112,7 +114,7 @@ public class AutorDAO implements DAO<Autor> {
         try {
             PreparedStatement ps = conexion.prepareStatement(UPDATE);
             ps.setString(1, a.getNombre());
-            ps.setInt(3, a.getId());
+            ps.setInt(2, a.getId());
             ps.execute();
             return 1;
         } catch (SQLException e) {

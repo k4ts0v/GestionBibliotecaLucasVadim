@@ -176,7 +176,7 @@ public class DDL {
         createDB();
         createTables();
         try {
-            importSQL("./biblioteca_jdbc/src/main/java/com/lvgvg/modelo/datos/bdBiblioteca.sql");
+            importSQL("./src/main/java/com/lvgvg/modelo/datos/bdBiblioteca.sql");
         } catch (IOException e) {
             System.out.println("Error importando los datos.");
         }

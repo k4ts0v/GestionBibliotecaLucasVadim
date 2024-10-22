@@ -22,7 +22,7 @@ import com.lvgvg.modelo.dto.Autor;
 
 public class AutorDAO implements DAO<Autor> {
     private Connection conexion = JDBC.getConexion();
-    private final String CREATE = "INSERT INTO Autor VALUES(?,?,?)";
+    private final String CREATE = "INSERT INTO Autor VALUES(?,?)";
     private final String READ = "SELECT * FROM Autor WHERE id = ?";
     private final String READALL = "SELECT * FROM Autor";
     private final String UPDATE = "UPDATE Autor SET titulo=?, isbn=? WHERE id = ?";
@@ -41,16 +41,17 @@ public class AutorDAO implements DAO<Autor> {
         try {
             PreparedStatement ps = conexion.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, 0);
-            ps.setString(1, a.getNombre());
+            ps.setString(2, a.getNombre());
 
-            ps.executeUpdate(CREATE);
+            ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             while (rs.next()) {
                 a.setId(rs.getInt(1));
                 return 1;
             }
         } catch (SQLException e) {
-            throw new SQLException();
+            e.printStackTrace();
+            // throw new SQLException();
         }
         return -1;
     }
@@ -68,7 +69,7 @@ public class AutorDAO implements DAO<Autor> {
         try {
             PreparedStatement ps = conexion.prepareStatement(READ);
             ps.setInt(1, a.getId());
-            ResultSet rs = ps.executeQuery(READ);
+            ResultSet rs = ps.executeQuery();
             Autor au = getAutorRS(rs);
             return au;
         } catch (SQLException e) {

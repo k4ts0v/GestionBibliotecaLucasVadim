@@ -12,15 +12,15 @@ import com.lvgvg.modelo.dto.Libro;
 import com.lvgvg.modelo.dto.LibroAutor;
 
 public class BibliotecaService {
-    private DDL ddl;
-    private ArrayList<Libro> listaLibros;
-    private LibroDAO lDAO;
-    private ArrayList<Autor> listaAutores;
-    private AutorDAO aDAO;
-    private ArrayList<LibroAutor> listaLibrosAutores;
-    private LibroAutorDAO laDAO;
+    private static DDL ddl;
+    private static ArrayList<Libro> listaLibros;
+    private static LibroDAO lDAO;
+    private static ArrayList<Autor> listaAutores;
+    private static AutorDAO aDAO;
+    private static ArrayList<LibroAutor> listaLibrosAutores;
+    private static LibroAutorDAO laDAO;
 
-    public BibliotecaService() {
+    public BibliotecaService() throws SQLException {
         init();
     }
 
@@ -28,13 +28,13 @@ public class BibliotecaService {
      * Este método inicializa las listas en memoria mediante el ReadAll de los DAOs.
      * @throws SQLException Lanza una excepción si no se ha podido leer el contenido de la BD.
      */
-    private void init() {
+    private static void init() throws SQLException {
         ddl = new DDL();
         lDAO = new LibroDAO();
         aDAO = new AutorDAO();
         laDAO = new LibroAutorDAO();
+        ddl.run();
         try {
-            ddl.run();
             listaLibros = lDAO.readAll();
             listaAutores = aDAO.readAll();
             listaLibrosAutores = laDAO.readAll();
@@ -51,7 +51,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha añadido correctamente de la BD.
      */
-    private Integer anhadirLibro(Libro l) {
+    private static Integer anhadirLibro(Libro l) {
         try {
             if (lDAO.create(l) == 1) {
                 listaLibros.add(l);
@@ -142,7 +142,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha añadido correctamente de la BD.
      */
-    private Integer anhadirAutor(Autor a) {
+    private static Integer anhadirAutor(Autor a) {
         try {
             if (aDAO.create(a) == 1) {
                 listaAutores.add(a);
@@ -234,14 +234,16 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws Exception Lanza una excepción si no se ha borrado correctamente de la BD.
      */
-    private Integer anhadirLibroAutor(Libro l, Autor a) {
+    private static Integer anhadirLibroAutor(LibroAutor la, Libro l, Autor a) {
         try {
             if(existeLibro(l) && existeAutor(a)) {
-                listaLibrosAutores.add(new LibroAutor(l.getId(), a.getId()));
-                return 1;
+                if (laDAO.create(la) == 1) {
+                    listaLibrosAutores.add(la);
+                    return 1;
+                }
             }
         } catch (Exception e) {
-            System.out.println("no se ha podido asignar el libro al autor: " + e.getMessage());
+            System.out.println("No se ha podido asignar el libro al autor: " + e.getMessage());
         }
         return -1;
     }
@@ -253,7 +255,7 @@ public class BibliotecaService {
      * true -> Libro encontrado.
      * false -> Libro no encontrado.
      */
-    private boolean existeLibro(Libro l) {
+    private static boolean existeLibro(Libro l) {
         try {
             if (listaLibros.contains(l) || (lDAO.read(l) != null)) {
                 return true;
@@ -271,7 +273,7 @@ public class BibliotecaService {
      * true -> Autor encontrado.
      * false -> Autor no encontrado.
      */
-    private boolean existeAutor(Autor a) {
+    private static boolean existeAutor(Autor a) {
         try {
             if (listaAutores.contains(a) || (aDAO.read(a) != null)) {
                 return true;

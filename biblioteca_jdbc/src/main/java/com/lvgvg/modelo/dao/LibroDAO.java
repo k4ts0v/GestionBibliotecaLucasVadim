@@ -39,10 +39,10 @@ public class LibroDAO implements DAO<Libro> {
         try {
             PreparedStatement ps = conexion.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, 0);
-            ps.setString(1, l.getTitulo());
-            ps.setString(1, l.getIsbn());
+            ps.setString(2, l.getTitulo());
+            ps.setString(3, l.getIsbn());
 
-            ps.executeUpdate(CREATE);
+            ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             while (rs.next()) {
                 l.setId(rs.getInt(1));
@@ -65,7 +65,7 @@ public class LibroDAO implements DAO<Libro> {
         try  {
             PreparedStatement ps = conexion.prepareStatement(READ);
             ps.setInt(1, l.getId());
-            ResultSet rs = ps.executeQuery(READ);
+            ResultSet rs = ps.executeQuery();
             Libro li = getLibroRS(rs);
             return li;
         } catch (SQLException e) {

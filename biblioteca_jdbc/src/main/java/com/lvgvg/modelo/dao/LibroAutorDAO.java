@@ -24,11 +24,11 @@ import com.lvgvg.modelo.dto.LibroAutor;
 
 public class LibroAutorDAO implements DAO<LibroAutor> {
     private Connection conexion = JDBC.getConexion();
-    private final String CREATE = "INSERT INTO LibroAutor VALUES(?,?,?)";
-    private final String READ = "SELECT * FROM LibroAutor WHERE id = ?";
-    private final String READALL = "SELECT * FROM LibroAutor";
-    private final String UPDATE = "UPDATE LibroAutor SET titulo=?, isbn=? WHERE id = ?";
-    private final String DELETE = "DELETE * FROM LibroAutor WHERE id = ?";
+    private final String CREATE = "INSERT INTO Libro_Autor VALUES(?,?)";
+    private final String READ = "SELECT * FROM Libro_Autor WHERE id = ?";
+    private final String READALL = "SELECT * FROM Libro_Autor";
+    private final String UPDATE = "UPDATE Libro_Autor SET titulo=?, isbn=? WHERE id = ?";
+    private final String DELETE = "DELETE * FROM Libro_Autor WHERE id = ?";
 
     /**
      * Este método añade un libroAutor a la BD.
@@ -39,19 +39,15 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
     @Override
     public Integer create(LibroAutor l) throws SQLException {
         try {
-            PreparedStatement ps = conexion.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conexion.prepareStatement(CREATE);
             ps.setInt(1, l.getIdLibro());
             ps.setInt(2, l.getIdAutor());
 
-            ps.executeUpdate(CREATE);
-            ResultSet rs = ps.getGeneratedKeys();
-            while (rs.next()) {
-                l.setIdLibro(rs.getInt(1));
-                l.setIdAutor(rs.getInt(2));
-                return 1;
-            }
+            ps.executeUpdate();
+            return 1;
         } catch (SQLException e) {
-            throw new SQLException();
+            e.printStackTrace();
+            //throw new SQLException();
         }
         return -1;
     }
@@ -68,7 +64,7 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
             PreparedStatement ps = conexion.prepareStatement(READ);
             ps.setInt(1, la.getIdLibro());
             ps.setInt(2, la.getIdAutor());
-            ResultSet rs = ps.executeQuery(READ);
+            ResultSet rs = ps.executeQuery();
             LibroAutor l = getLibroAutorRS(rs);
             return l;
         } catch (SQLException e) {

@@ -31,7 +31,7 @@ public interface DAO<T> {
      * @return Objeto leído de la base de datos.
      * @throws SQLException Lanza una SQLException si no se ha podido leer el objeto de la BD.
      */
-    T read(Integer id) throws SQLException;
+    T read(T t) throws SQLException;
 
     /**
      * @return Arraylist con el contenido de la tabla de la base de datos del objeto.

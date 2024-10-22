@@ -1,9 +1,11 @@
 package com.lvgvg;
 
+import com.lvgvg.modelo.menus.Menu;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
-        System.out.println("asad");
-        System.out.println("testd");
+        Menu m = new Menu();
+
+        m.run();
     }
 }

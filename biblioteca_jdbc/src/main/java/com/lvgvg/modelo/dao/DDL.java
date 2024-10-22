@@ -47,7 +47,7 @@ public class DDL {
     /**
      * Método que crea la base de datos.
      */
-    public static void createDB() {
+    private static void createDB() {
         try (Statement st = conexion.createStatement()) {
             st.execute(String.format("CREATE DATABASE IF NOT EXISTS %s;", DB));
             st.execute(String.format("USE %s;", DB));
@@ -59,7 +59,7 @@ public class DDL {
     /**
      * Método que crea las tablas.
      */
-    public static void createTables() {
+    private static void createTables() {
         try (Statement st = conexion.createStatement()) {
             // Itera sobre el array de tablas y crea la sentencia SQL de manera dinámica.
             for (int i = 0; i < tablas.length; i++) {
@@ -145,7 +145,7 @@ public class DDL {
      * @param file Ruta del archivo SQL.
      * @throws IOException Si hay problemas con el archivo.
      */
-    public static void importSQL(String file) throws IOException {
+    private static void importSQL(String file) throws IOException {
         String sqlScript = new String(Files.readAllBytes(Paths.get(file)));
         String[] stc = sqlScript.split(";");
 
@@ -169,7 +169,10 @@ public class DDL {
         }
     }
 
-    public static void main(String[] args) { // TODO: Pasar al gestor, esto no debería de ir aquí.
+    /**
+     * Método que ejecuta todos los métodos de creación de la BD, encargándose de crear toda la estructura.
+     */
+    public void run() {
         createDB();
         createTables();
         try {

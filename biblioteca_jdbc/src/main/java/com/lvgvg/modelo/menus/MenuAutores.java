@@ -3,8 +3,6 @@ package com.lvgvg.modelo.menus;
 import java.util.Scanner;
 
 import com.lvgvg.modelo.dto.Autor;
-import com.lvgvg.modelo.dto.Libro;
-import com.lvgvg.modelo.dto.LibroAutor;
 import com.lvgvg.modelo.servicio.BibliotecaService;
 
 public class MenuAutores {

@@ -350,35 +350,33 @@ public class BibliotecaService {
         return -1;
     }
 
-    private Integer anhadirUsuario(Usuario u) {
+    public Integer anhadirUsuario(Usuario u) {
         try {
-            if (uDAO.create(u) == 1)
+            if (uDAO.create(u) == 1) {
                 listaUsuarios.add(u);
-          return 1;
+                return 1;
+            }
         } catch(SQLException e)
         { System.out.println(e.getMessage());}
         return -1;
     }
-    private Integer leerUsuario(Usuario u) {
+    public Integer leerUsuario(Usuario u) {
         try {
             u = uDAO.read(u);
             if (listaUsuarios.contains(u)) {
                 System.out.println(u.toString());
             } return 1;
-           if (uDAO.read(u) == 1) {
-
-           }
         } catch(SQLException e)
         {System.out.println(e.getMessage());}
         return -1;
     }
-    private void leerUsuarios() {
+    public void leerUsuarios() {
         for(Usuario u : listaUsuarios)
             System.out.println(u.toString());
     }
-    private Integer updateUsuario(Usuario u) {
+    public Integer updateUsuario(Usuario u) {
         try {
-        if (uDao.update(u) == 1) {
+        if (uDAO.update(u) == 1) {
             int index = listaUsuarios.indexOf(u);
             listaUsuarios.set(index, u);
         } return 1;
@@ -387,9 +385,9 @@ public class BibliotecaService {
         }
         return -1;
     }
-    private Integer borrarUsuario(Usuario u) {
+    public Integer borrarUsuario(Usuario u) {
         try {
-            if (uDao.delete(u) == 1) {
+            if (uDAO.delete(u) == 1) {
                 listaUsuarios.remove(u);
             } return 1;
 
@@ -403,7 +401,7 @@ public class BibliotecaService {
 
     private Integer anhadirPrestamo(Prestamo p) {
         try {
-            if (pDAO.create() == 1)
+            if (pDAO.create(p) == 1)
                 listaPrestamos.add(p);
             return 1;
         } catch(SQLException e)
@@ -412,12 +410,10 @@ public class BibliotecaService {
     }
     private Integer leerPrestamo(Prestamo p) {
         try {
-            Prestamo p = pDAO.read(p);
-            if (listaPrestamoss.contains(p)) {
+            p = pDAO.read(p);
+            if (listaPrestamos.contains(p)) {
                 System.out.println(p.toString());
-            } return 1;
-            if (pDAO.read(p) == 1) {
-
+                return 1;
             }
         } catch(SQLException e)
         {System.out.println(e.getMessage());}
@@ -429,7 +425,7 @@ public class BibliotecaService {
     }
     private Integer updateUsuario(Prestamo p) {
         try {
-            if (pDao.update(p) == 1) {
+            if (pDAO.update(p) == 1) {
                 int index = listaPrestamos.indexOf(p);
                 listaPrestamos.set(index, p);
             } return 1;
@@ -440,8 +436,8 @@ public class BibliotecaService {
     }
     private Integer borrarPrestamo(Prestamo p) {
         try {
-            if (pDao.delete(p) == 1) {
-                listaPrestamos.remove(u);
+            if (pDAO.delete(p) == 1) {
+                listaPrestamos.remove(p);
             } return 1;
 
         } catch(SQLException e) {
@@ -463,9 +459,9 @@ public class BibliotecaService {
         }
         return false;
     }
-    private boolean existePrestamo() {
+    private boolean existePrestamo(Prestamo p) {
         try {
-            if (listaPrestamos.contains(u) || (pDAO.read(p) != null)) {
+            if (listaPrestamos.contains(p) || (pDAO.read(p) != null)) {
                 return true;
             }
         } catch(SQLException e) {
@@ -475,13 +471,7 @@ public class BibliotecaService {
         }
         return false;
     }
-    private boolean existePrestamo(Prestamo p) {
-        try {
-            if
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+
     /**
      * Este método comprueba si existe un libro en la lista de memoria y en la base de datos.
      * @param l Libro a comprobar.

@@ -16,33 +16,32 @@ public class PrestamoDAO implements DAO<Prestamo> {
     private final String UPDATE = "UPDATE Prestamo SET fechaInicio=?, fechaFin=?, usuarioId=?, libroId=? WHERE id = ?";
     private final String DELETE = "DELETE * FROM Prestamo WHERE id = ?";
     @Override
-    public Integer create(Prestamo p) {
-        int usuarioId = p.getUsuarioId();
-        int libroId = p.getLibroId();
+    public Integer create(Prestamo p) throws SQLException {
             try {
                 PreparedStatement ps = conexion.prepareStatement(CREATE);
                 ps.setString(1, p.getFechaInicio());
                 ps.setString(2, p.getFechaFin());
-                ps.setInt(3, p.getUsuarioId());
-                ps.setInt(4, p.getLibroId());
+                ps.setInt(3, p.getIdUsuario());
+                ps.setInt(4, p.getIdLibro());
                 return 1;
             } catch (SQLException e) {
                 throw new SQLException();
             }
-            return -1;
 
     }
     @Override
-    public Prestamo read(Prestamo p) {
+    public Prestamo read(Prestamo p) throws SQLException {
         try {
         PreparedStatement ps = conexion.prepareStatement(READ);
         ps.setInt(1, p.getId());
         ResultSet rs = ps.executeQuery();
-        crearPrestamo(rs);
-        return 1;
+        if (rs.next()) {
+            return crearPrestamo(rs);
+        }
         } catch(SQLException e) {
-            return new SQLException();
-        } return -1;
+            throw new SQLException();
+        }
+        return null;
     }
     @Override
     public ArrayList<Prestamo> readAll() throws SQLException {
@@ -59,19 +58,18 @@ public class PrestamoDAO implements DAO<Prestamo> {
         return listaPrestamo;
     }
     @Override
-    public Integer update(Prestamo p) {
+    public Integer update(Prestamo p) throws SQLException {
         try {
             PreparedStatement ps = conexion.prepareStatement(UPDATE);
             ps.setString(1, p.getFechaInicio());
             ps.setString(2, p.getFechaFin());
-            ps.setInt(3, p.getUsuarioId());
-            ps.setInt(4, p.getLibroId());
+            ps.setInt(3, p.getIdUsuario());
+            ps.setInt(4, p.getIdLibro());
             ps.setInt(5, p.getId());
             return ps.executeUpdate();
         } catch(SQLException e) {
             throw new SQLException();
         }
-        return -1;
     }
     @Override
     public Integer delete(Prestamo p) throws SQLException {
@@ -84,6 +82,6 @@ public class PrestamoDAO implements DAO<Prestamo> {
         }
     }
     public Prestamo crearPrestamo(ResultSet rs) throws SQLException {
-        return new Prestamo(rs.getInt(1), rs.getDate(2), rs.getDate(3));
+        return new Prestamo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5));
     }
 }

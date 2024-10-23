@@ -1,13 +1,8 @@
 package com.lvgvg.modelo.dto;
 
-import java.sql.Date;
 import java.util.Objects;
 
 public class Prestamo {
-    public Prestamo(int int1, Date date, Date date2) {
-        //TODO Auto-generated constructor stub
-    }
-
     public int getId() {
         return id;
     }
@@ -56,6 +51,13 @@ public class Prestamo {
     private int idLibro;
     public Prestamo(int id) {
         this.id = id;
+    }
+    public Prestamo(Integer idPrestamo, String fechaInicio, String fechaFin, int idUsuario, int idLibro ) {
+        this.id = idPrestamo;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.idUsuario = idUsuario;
+        this.idLibro = idLibro;
     }
     public Prestamo(String fechaInicio, String fechaFin, int idUsuario, int idLibro ) {
         this.fechaInicio = fechaInicio;

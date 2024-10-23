@@ -1,5 +1,10 @@
 package com.lvgvg.modelo.menus;
 
+import java.util.Scanner;
+
+import com.lvgvg.modelo.dto.Usuario;
+import com.lvgvg.modelo.servicio.BibliotecaService;
+
 public class MenuUsuarios {
     private static Scanner scanner = new Scanner(System.in); // Scanner para la entrada de texto.
     private BibliotecaService biblioteca = new BibliotecaService();
@@ -25,6 +30,7 @@ public class MenuUsuarios {
                 6 - Salir
                 """);
     }
+
     private void menu() {
         boolean estado = false;
         while (!estado) {
@@ -42,6 +48,8 @@ public class MenuUsuarios {
                     System.out.println("Introduce una opcion valida");
             }
         }
+    }
+        
         private Usuario crearNuevoUsuario() {
             scanner.nextLine();
             System.out.println("Introduce el nombre del usuario: ");
@@ -52,7 +60,7 @@ public class MenuUsuarios {
             scanner.nextLine();
             System.out.println("Introduce el id del usuario que desea leer: ");
             int id = scanner.nextInt();
-            return new Usuario(id);
+            return new Usuario(id, "");
         }
         private Usuario getNuevoUsuario() {
             scanner.nextLine();
@@ -62,13 +70,6 @@ public class MenuUsuarios {
             String nombre = scanner.nextLine();
             return new Usuario(id, nombre);
         }
-        private Usuario getIdUsuario() {
-            scanner.nextLine();
-            System.out.println("Introduce el id del usuario que desea borrar: ");
-            int id = scanner.nextInt();
-            return new Usuario(id);
-        }
     }
 
 
-}

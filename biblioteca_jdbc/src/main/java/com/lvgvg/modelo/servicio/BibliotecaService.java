@@ -20,8 +20,12 @@ public class BibliotecaService {
     private static ArrayList<LibroAutor> listaLibrosAutores;
     private static LibroAutorDAO laDAO;
 
-    public BibliotecaService() throws SQLException {
-        init();
+    public BibliotecaService() {
+        try {
+            init();
+        } catch (SQLException e) {
+            System.out.println("Se ha producido un error cargando el contenido: " + e.getMessage());
+        }
     }
 
     /**
@@ -39,7 +43,7 @@ public class BibliotecaService {
             listaAutores = aDAO.readAll();
             listaLibrosAutores = laDAO.readAll();
         } catch (SQLException e) {
-            System.out.println("Se ha producido un error cargando el contenido: " + e.getMessage());
+            throw new SQLException();
         }
     }
 
@@ -51,7 +55,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha añadido correctamente de la BD.
      */
-    private static Integer anhadirLibro(Libro l) {
+    public Integer anhadirLibro(Libro l) {
         try {
             if (lDAO.create(l) == 1) {
                 listaLibros.add(l);
@@ -71,7 +75,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha leído correctamente de la BD.
      */
-    private Integer readLibro(Libro l) {
+    public Integer mostrarLibro(Libro l) {
         try {
             Libro lBD = lDAO.read(l);
             if (listaLibros.contains(lBD)) {
@@ -88,7 +92,7 @@ public class BibliotecaService {
      * Este método lee todo el contenido de la lista.
      * @return 1 - Si se ha leído correctamente.
      */
-    private Integer readAllLibro() {
+    public Integer mostrarTodosLibros() {
         listaLibros.forEach(System.out::println);
         return 1;
     }
@@ -101,7 +105,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha actualizado correctamente de la BD.
      */
-    private Integer updateLibro(Libro l) {
+    public Integer actualizarLibro(Libro l) {
         try {
             if (lDAO.update(l) == 1) {
                 listaLibros.remove(l);
@@ -122,7 +126,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha borrado correctamente de la BD.
      */
-    private Integer borrarLibro(Libro l) {
+    public Integer borrarLibro(Libro l) {
         try {
             if (lDAO.delete(l) == 1) {
                 listaLibros.remove(l);
@@ -142,7 +146,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha añadido correctamente de la BD.
      */
-    private static Integer anhadirAutor(Autor a) {
+    public Integer anhadirAutor(Autor a) {
         try {
             if (aDAO.create(a) == 1) {
                 listaAutores.add(a);
@@ -162,7 +166,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha leído correctamente de la BD.
      */
-    private Integer readAutor(Autor a) {
+    public Integer mostrarAutor(Autor a) {
         try {
             Autor aBD = aDAO.read(a);
             if (listaAutores.contains(aBD)) {
@@ -179,7 +183,7 @@ public class BibliotecaService {
      * Este método lee todo el contenido de la lista.
      * @return 1 - Si se ha leído correctamente.
      */
-    private Integer readAllAutor() {
+    public Integer mostrarTodosAutores() {
         listaAutores.forEach(System.out::println);
         return 1;
     }
@@ -192,7 +196,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha actualizado correctamente de la BD.
      */
-    private Integer updateAutor(Autor a) {
+    public Integer actualizarAutor(Autor a) {
         try {
             if (aDAO.update(a) == 1) {
                 listaAutores.remove(a);
@@ -213,7 +217,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha borrado correctamente de la BD.
      */
-    private Integer borrarAutor(Autor a) {
+    public Integer borrarAutor(Autor a) {
         try {
             if (aDAO.delete(a) == 1) {
                 listaAutores.remove(a);
@@ -232,18 +236,111 @@ public class BibliotecaService {
      * @return Integer - Resultado de la operación:
      * 1 -> Realizado correctamente.
      * -1 -> No realizado, ha habido algún error.
-     * @throws Exception Lanza una excepción si no se ha borrado correctamente de la BD.
+     * @throws Exception Lanza una excepción si no se ha asignado correctamente.
      */
-    private static Integer anhadirLibroAutor(LibroAutor la, Libro l, Autor a) {
+    public Integer anhadirLibroAutor(Libro l, Autor a) {
         try {
             if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
                 if (laDAO.create(la) == 1) {
                     listaLibrosAutores.add(la);
                     return 1;
                 }
             }
         } catch (Exception e) {
-            System.out.println("No se ha podido asignar el libro al autor: " + e.getMessage());
+            System.out.println("Error asignando el libro al autor: " + e.getMessage());
+        }
+        return -1;
+    }
+
+
+    /**
+     * Este método lee una asignación de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha leído correctamente de la BD.
+     */
+    public Integer mostrarLibroAutor(Libro l, Autor a) {
+        try {
+            if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
+                LibroAutor laBD = laDAO.read(la);
+                System.out.println(la);
+                System.out.println(laBD.toString());
+                if (listaLibrosAutores.contains(laBD)) {
+                    System.out.println(laBD.toString());
+                    return 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al mostrar las asginaciones: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    /**
+     * Este método lee todas las asignaciones de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha leído correctamente de la BD.
+     */
+    public Integer mostrarTodosLibrosAutores() {
+        listaLibrosAutores.forEach(System.out::println);
+        return 1;
+    }
+
+    /**
+     * Este método actualiza una asignación de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha actualizado correctamente en la BD.
+     */
+    public Integer actualizarLibroAutor(Libro l, Autor a) {
+        try {
+            if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
+                if (laDAO.update(la) == 1) {
+                    listaLibrosAutores.remove(la);
+                    listaLibrosAutores.add(la);
+                    return 1;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar la asignación: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    /**
+     * Este método borra una asignación de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha borrado correctamente de la BD.
+     */
+    public Integer borrarLibroAutor(Libro l, Autor a) {
+        try {
+            if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
+                if (laDAO.delete(la) == 1) {
+                    listaLibrosAutores.remove(la);
+                    return 1;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al borrar la asignación: " + e.getMessage());
         }
         return -1;
     }

@@ -151,7 +151,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha añadido correctamente de la BD.
      */
-    private Integer anhadirAutor(Autor a) {
+    public Integer anhadirAutor(Autor a) {
         try {
             if (aDAO.create(a) == 1) {
                 listaAutores.add(a);
@@ -171,7 +171,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha leído correctamente de la BD.
      */
-    private Integer readAutor(Autor a) {
+    public Integer mostrarAutor(Autor a) {
         try {
             Autor aBD = aDAO.read(a);
             if (listaAutores.contains(aBD)) {
@@ -188,7 +188,7 @@ public class BibliotecaService {
      * Este método lee todo el contenido de la lista.
      * @return 1 - Si se ha leído correctamente.
      */
-    private Integer readAllAutor() {
+    public Integer mostrarTodosAutores() {
         listaAutores.forEach(System.out::println);
         return 1;
     }
@@ -201,7 +201,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha actualizado correctamente de la BD.
      */
-    private Integer updateAutor(Autor a) {
+    public Integer actualizarAutor(Autor a) {
         try {
             if (aDAO.update(a) == 1) {
                 listaAutores.remove(a);
@@ -222,7 +222,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha borrado correctamente de la BD.
      */
-    private Integer borrarAutor(Autor a) {
+    public Integer borrarAutor(Autor a) {
         try {
             if (aDAO.delete(a) == 1) {
                 listaAutores.remove(a);

@@ -15,7 +15,7 @@ import java.util.Objects;
 
 // Clase libro, que representa los libros de la biblioteca.
 public class Libro {
-    private Integer id; // Id del libro.
+    Integer id; // Id del libro.
     private String titulo; // Título del libro.
     private String isbn; // ISBN del libro.
 

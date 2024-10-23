@@ -19,6 +19,10 @@ public class BibliotecaService {
     private AutorDAO aDAO;
     private ArrayList<LibroAutor> listaLibrosAutores;
     private LibroAutorDAO laDAO;
+    private PrestamoDAO pDAO;
+    private UsuarioDAO uDAO;
+    private ArrayList<User> listaUsuarios;
+    private ArrayList<Prestamo> listaPrestamos;
 
     public BibliotecaService() {
         init();
@@ -33,11 +37,16 @@ public class BibliotecaService {
         lDAO = new LibroDAO();
         aDAO = new AutorDAO();
         laDAO = new LibroAutorDAO();
+        pDAO = new PrestamoDAO();
+        uDAO = new UsuarioDAO();
         try {
             ddl.run();
             listaLibros = lDAO.readAll();
             listaAutores = aDAO.readAll();
             listaLibrosAutores = laDAO.readAll();
+            listaUsuarios = lDAO.readAll();
+            listaPrestamos = pDAO.readAll();
+
         } catch (SQLException e) {
             System.out.println("Se ha producido un error cargando el contenido: " + e.getMessage());
         }
@@ -245,7 +254,138 @@ public class BibliotecaService {
         }
         return -1;
     }
+    private Integer anhadirUsuario(Usuario u) {
+        try {
+            if (uDAO.create == 1)
+                listaUsuarios.add(u);
+          return 1;
+        } catch(SQLException )
+        { System.out.println(e.getMessage());}
+        return -1;
+    }
+    private Integer leerUsuario(Usuario u) {
+        try {
+            Usuario u = uDAO.read(u);
+            if (listaUsuarios.contains(u)) {
+                System.out.println(u.toString());
+            } return 1;
+           if (uDAO.read(u) == 1) {
 
+           }
+        } catch(SQLException e)
+        {System.out.println(e.getMessage());}
+        return -1;
+    }
+    private void leerUsuarios() {
+        for(Usuario u : listaUsuarios)
+            System.out.println(u.toString());
+    }
+    private Integer updateUsuario(Usuario u) {
+        try {
+        if (uDao.update(u) == 1) {
+            int index = listaUsuarios.indexOf(u);
+            listaUsuarios.set(index, u);
+        } return 1;
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+    private Integer borrarUsuario(Usuario u) {
+        try {
+            if (uDao.delete(u) == 1) {
+                listaUsuarios.remove(u);
+            } return 1;
+
+        } catch(SQLException e) {
+            {
+                System.out.println(e.getMessage());
+            }
+        }
+        return -1;
+    }
+
+    private Integer anhadirPrestamo(Prestamo p) {
+        try {
+            if (pDAO.create == 1)
+                listaPrestamos.add(p);
+            return 1;
+        } catch(SQLException )
+        { System.out.println(e.getMessage());}
+        return -1;
+    }
+    private Integer leerPrestamo(Prestamo p) {
+        try {
+            Prestamo p = pDAO.read(p);
+            if (listaPrestamoss.contains(p)) {
+                System.out.println(p.toString());
+            } return 1;
+            if (pDAO.read(p) == 1) {
+
+            }
+        } catch(SQLException e)
+        {System.out.println(e.getMessage());}
+        return -1;
+    }
+    private void leerPrestamos() {
+        for(Prestamo : listaPrestamos)
+            System.out.println(p.toString());
+    }
+    private Integer updateUsuario(Prestamo p) {
+        try {
+            if (pDao.update(p) == 1) {
+                int index = listaPrestamos.indexOf(p);
+                listaPrestamoss.set(index, p);
+            } return 1;
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+    private Integer borrarPrestamo(Prestamo p) {
+        try {
+            if (pDao.delete(p) == 1) {
+                listaPrestamos.remove(u);
+            } return 1;
+
+        } catch(SQLException e) {
+            {
+                System.out.println(e.getMessage());
+            }
+        }
+        return -1;
+    }
+    private boolean existeUsuario(Usuario u) {
+        try {
+        if (listaUsuarios.contains(u) || (uDAO.read(u) != null)) {
+            return true;
+        }
+        } catch(SQLException e) {
+            {
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
+    private boolean existePrestamo() {
+        try {
+            if (listaPrestamos.contains(u) || (pDAO.read(p) != null)) {
+                return true;
+            }
+        } catch(SQLException e) {
+            {
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
+    private boolean existePrestamo(Prestamo p) {
+        try {
+            if
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
     /**
      * Este método comprueba si existe un libro en la lista de memoria y en la base de datos.
      * @param l Libro a comprobar.
@@ -281,4 +421,5 @@ public class BibliotecaService {
         }
         return false;
     }
+
 }

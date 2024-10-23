@@ -7,9 +7,13 @@ import com.lvgvg.modelo.dao.AutorDAO;
 import com.lvgvg.modelo.dao.DDL;
 import com.lvgvg.modelo.dao.LibroAutorDAO;
 import com.lvgvg.modelo.dao.LibroDAO;
+import com.lvgvg.modelo.dao.PrestamoDAO;
+import com.lvgvg.modelo.dao.UsuarioDAO;
 import com.lvgvg.modelo.dto.Autor;
 import com.lvgvg.modelo.dto.Libro;
 import com.lvgvg.modelo.dto.LibroAutor;
+import com.lvgvg.modelo.dto.Prestamo;
+import com.lvgvg.modelo.dto.Usuario;
 
 public class BibliotecaService {
     private DDL ddl;
@@ -21,7 +25,7 @@ public class BibliotecaService {
     private LibroAutorDAO laDAO;
     private PrestamoDAO pDAO;
     private UsuarioDAO uDAO;
-    private ArrayList<User> listaUsuarios;
+    private ArrayList<Usuario> listaUsuarios;
     private ArrayList<Prestamo> listaPrestamos;
 
     public BibliotecaService() {
@@ -44,7 +48,7 @@ public class BibliotecaService {
             listaLibros = lDAO.readAll();
             listaAutores = aDAO.readAll();
             listaLibrosAutores = laDAO.readAll();
-            listaUsuarios = lDAO.readAll();
+            listaUsuarios = uDAO.readAll();
             listaPrestamos = pDAO.readAll();
 
         } catch (SQLException e) {
@@ -60,7 +64,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha añadido correctamente de la BD.
      */
-    private Integer anhadirLibro(Libro l) {
+    public Integer anhadirLibro(Libro l) {
         try {
             if (lDAO.create(l) == 1) {
                 listaLibros.add(l);
@@ -80,7 +84,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha leído correctamente de la BD.
      */
-    private Integer readLibro(Libro l) {
+    public Integer mostrarLibro(Libro l) {
         try {
             Libro lBD = lDAO.read(l);
             if (listaLibros.contains(lBD)) {
@@ -97,7 +101,7 @@ public class BibliotecaService {
      * Este método lee todo el contenido de la lista.
      * @return 1 - Si se ha leído correctamente.
      */
-    private Integer readAllLibro() {
+    public Integer mostrarTodosLibros() {
         listaLibros.forEach(System.out::println);
         return 1;
     }
@@ -110,7 +114,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha actualizado correctamente de la BD.
      */
-    private Integer updateLibro(Libro l) {
+    public Integer actualizarLibro(Libro l) {
         try {
             if (lDAO.update(l) == 1) {
                 listaLibros.remove(l);
@@ -131,7 +135,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws SQLException Lanza una excepción si no se ha borrado correctamente de la BD.
      */
-    private Integer borrarLibro(Libro l) {
+    public Integer borrarLibro(Libro l) {
         try {
             if (lDAO.delete(l) == 1) {
                 listaLibros.remove(l);
@@ -348,16 +352,16 @@ public class BibliotecaService {
 
     private Integer anhadirUsuario(Usuario u) {
         try {
-            if (uDAO.create == 1)
+            if (uDAO.create(u) == 1)
                 listaUsuarios.add(u);
           return 1;
-        } catch(SQLException )
+        } catch(SQLException e)
         { System.out.println(e.getMessage());}
         return -1;
     }
     private Integer leerUsuario(Usuario u) {
         try {
-            Usuario u = uDAO.read(u);
+            u = uDAO.read(u);
             if (listaUsuarios.contains(u)) {
                 System.out.println(u.toString());
             } return 1;
@@ -399,10 +403,10 @@ public class BibliotecaService {
 
     private Integer anhadirPrestamo(Prestamo p) {
         try {
-            if (pDAO.create == 1)
+            if (pDAO.create() == 1)
                 listaPrestamos.add(p);
             return 1;
-        } catch(SQLException )
+        } catch(SQLException e)
         { System.out.println(e.getMessage());}
         return -1;
     }
@@ -420,14 +424,14 @@ public class BibliotecaService {
         return -1;
     }
     private void leerPrestamos() {
-        for(Prestamo : listaPrestamos)
+        for(Prestamo p: listaPrestamos)
             System.out.println(p.toString());
     }
     private Integer updateUsuario(Prestamo p) {
         try {
             if (pDao.update(p) == 1) {
                 int index = listaPrestamos.indexOf(p);
-                listaPrestamoss.set(index, p);
+                listaPrestamos.set(index, p);
             } return 1;
         } catch(SQLException e) {
             System.out.println(e.getMessage());

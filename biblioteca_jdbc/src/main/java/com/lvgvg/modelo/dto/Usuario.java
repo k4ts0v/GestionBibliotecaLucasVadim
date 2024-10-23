@@ -1,6 +1,15 @@
+package com.lvgvg.modelo.dto;
+
+import java.util.Objects;
+
 public class Usuario {
     private int id;
     private String nombre;
+
+    public Usuario(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 
     public int getId() {
         return id;

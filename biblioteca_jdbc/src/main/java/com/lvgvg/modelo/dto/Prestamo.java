@@ -1,4 +1,13 @@
+package com.lvgvg.modelo.dto;
+
+import java.sql.Date;
+import java.util.Objects;
+
 public class Prestamo {
+    public Prestamo(int int1, Date date, Date date2) {
+        //TODO Auto-generated constructor stub
+    }
+
     public int getId() {
         return id;
     }

@@ -26,6 +26,34 @@ public class Prestamo {
     private int id;
     private String fechaInicio;
     private String fechaFin;
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public int getIdLibro() {
+        return idLibro;
+    }
+
+    public void setIdLibro(int idLibro) {
+        this.idLibro = idLibro;
+    }
+
+    private int idUsuario;
+    private int idLibro;
+    public Prestamo(int id) {
+        this.id = id;
+    }
+    public Prestamo(String fechaInicio, String fechaFin, int idUsuario, int idLibro ) {
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.idUsuario = idUsuario;
+        this.idLibro = idLibro;
+    }
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -4,12 +4,12 @@ import java.util.Objects;
 
 // Clase LibroAutor, que sirve como tabla intermedia para la relación entre Libro y Autor.
 public class LibroAutor {
-    private Integer idAutor; // Id del autor.
     private Integer idLibro; // Id del libro.
+    private Integer idAutor; // Id del autor.
 
-    public LibroAutor(Integer idAutor, Integer idLibro) {
-        setIdAutor(idAutor); // Id del autor.
+    public LibroAutor(Integer idLibro, Integer idAutor) {
         setIdLibro(idLibro); // Id del libro.
+        setIdAutor(idAutor); // Id del autor.
     }
 
     // Getters y setters.

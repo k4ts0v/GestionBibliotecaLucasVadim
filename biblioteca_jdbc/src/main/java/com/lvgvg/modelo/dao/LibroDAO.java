@@ -26,7 +26,7 @@ public class LibroDAO implements DAO<Libro> {
     private final String READ = "SELECT * FROM Libro WHERE id = ?";
     private final String READALL = "SELECT * FROM Libro";
     private final String UPDATE = "UPDATE Libro SET titulo=?, isbn=? WHERE id = ?";
-    private final String DELETE = "DELETE * FROM Libro WHERE id = ?";
+    private final String DELETE = "DELETE FROM Libro WHERE id = ?";
 
     /**
      * Este método añade un libro a la BD.
@@ -39,10 +39,10 @@ public class LibroDAO implements DAO<Libro> {
         try {
             PreparedStatement ps = conexion.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, 0);
-            ps.setString(1, l.getTitulo());
-            ps.setString(1, l.getIsbn());
+            ps.setString(2, l.getTitulo());
+            ps.setString(3, l.getIsbn());
 
-            ps.executeUpdate(CREATE);
+            ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             while (rs.next()) {
                 l.setId(rs.getInt(1));
@@ -65,9 +65,12 @@ public class LibroDAO implements DAO<Libro> {
         try  {
             PreparedStatement ps = conexion.prepareStatement(READ);
             ps.setInt(1, l.getId());
-            ResultSet rs = ps.executeQuery(READ);
-            Libro li = getLibroRS(rs);
-            return li;
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                return getLibroRS(rs);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new SQLException();
         }

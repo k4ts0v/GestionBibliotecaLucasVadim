@@ -1,3 +1,5 @@
+package com.lvgvg.modelo.dto;
+
 public class Prestamo {
     public int getId() {
         return id;

@@ -1,3 +1,7 @@
+package com.lvgvg.modelo.dto;
+
+import java.util.Objects;
+
 public class Usuario {
     private int id;
     private String nombre;

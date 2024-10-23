@@ -8,8 +8,7 @@ import com.lvgvg.modelo.servicio.BibliotecaService;
 public class MenuLibroAutor {
     private Scanner k = new Scanner(System.in); // Scanner para la entrada de texto.
     private BibliotecaService biblioteca = new BibliotecaService();
-    private MenuLibros menuLibros = new MenuLibros();
-    private MenuAutores menuAutores = new MenuAutores();
+    // No se añaden los constructores de los menús, porque esto provocaría una dependecia cíclica, que deriva en un stackOverflowError.
 
     /**
      * Método público run, que es llamado desde otras clases. Llama al método
@@ -44,59 +43,14 @@ public class MenuLibroAutor {
             System.out.print("Selecciona una opción: ");
             Byte opcion = k.nextByte();
             switch (opcion) {
-                case 1 -> biblioteca.anhadirLibroAutor(menuLibros.getIdLibro(), menuAutores.getIdAutor());
-                case 2 -> biblioteca.mostrarLibro(getIdLibro());
-                case 3 -> biblioteca.mostrarTodosLibros();
-                case 4 -> biblioteca.actualizarLibro(getDatosIdLibro());
-                case 5 -> biblioteca.borrarLibro(getIdLibro());
+                case 1 -> biblioteca.anhadirLibroAutor(MenuLibros.getIdLibro(), MenuAutores.getIdAutor());
+                case 2 -> biblioteca.mostrarLibroAutor(MenuLibros.getIdLibro(), MenuAutores.getIdAutor());
+                case 3 -> biblioteca.mostrarTodosLibrosAutores();
+                case 4 -> biblioteca.actualizarLibroAutor(MenuLibros.getIdLibro(), MenuAutores.getIdAutor());
+                case 5 -> biblioteca.borrarLibroAutor(MenuLibros.getIdLibro(), MenuAutores.getIdAutor());
                 case 6 -> salida = true;
                 default -> System.out.println("Introduce una opción válida.");
             }
         }
-    }
-
-    /**
-     * Este método sirve para obtener los datos e ID del libro por consola.
-     * @return Objeto Libro con los datos especificados.
-     */
-    Libro getDatosIdLibro() {
-        k.nextLine();
-        System.out.println("Introduce los datos del libro:");
-        System.out.println("ID: ");
-        Integer id = k.nextInt();
-        k.nextLine();
-        System.out.println("Título: ");
-        String titulo = k.nextLine();
-        System.out.println("ISBN:");
-        String isbn = k.nextLine();
-
-        return new Libro(id, titulo, isbn);
-    }
-
-    /**
-     * Este método sirve para obtener el ID del libro por consola.
-     * @return Objeto Libro con el ID especificado.
-     */
-    Libro getIdLibro() {
-        k.nextLine();
-        System.out.println("Introduce los datos del libro:");
-        System.out.println("ID: ");
-        Integer id = k.nextInt();
-        return new Libro(id, "", "");
-    }
-
-    /**
-     * Este método sirve para obtener los datos del libro por consola.
-     * @return Objeto Libro con los datos especificados.
-     */
-    private Libro getDatosLibro() {
-        k.nextLine();
-        System.out.println("Introduce los datos del libro:");
-        System.out.println("Título: ");
-        String titulo = k.nextLine();
-        System.out.println("ISBN:");
-        String isbn = k.nextLine();
-
-        return new Libro(titulo, isbn);
     }
 }

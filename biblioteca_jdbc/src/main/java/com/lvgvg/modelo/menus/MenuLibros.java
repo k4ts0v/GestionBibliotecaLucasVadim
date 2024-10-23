@@ -6,7 +6,7 @@ import com.lvgvg.modelo.dto.Libro;
 import com.lvgvg.modelo.servicio.BibliotecaService;
 
 public class MenuLibros {
-    private Scanner k = new Scanner(System.in); // Scanner para la entrada de texto.
+    private static Scanner k = new Scanner(System.in); // Scanner para la entrada de texto.
     private BibliotecaService biblioteca = new BibliotecaService();
 
     /**
@@ -75,7 +75,7 @@ public class MenuLibros {
      * Este método sirve para obtener el ID del libro por consola.
      * @return Objeto Libro con el ID especificado.
      */
-    Libro getIdLibro() {
+    static Libro getIdLibro() {
         k.nextLine();
         System.out.println("Introduce los datos del libro:");
         System.out.println("ID: ");

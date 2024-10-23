@@ -9,7 +9,7 @@ import com.lvgvg.modelo.servicio.BibliotecaService;
 
 public class MenuAutores {
 
-    private Scanner k = new Scanner(System.in); // Scanner para la entrada de texto.
+    private static Scanner k = new Scanner(System.in); // Scanner para la entrada de texto.
     private BibliotecaService biblioteca = new BibliotecaService(); // Instancia de la clase de servicio.
     private MenuLibroAutor menuLibroAutor = new MenuLibroAutor();
 
@@ -79,7 +79,7 @@ public class MenuAutores {
      * Este método sirve para obtener el ID del autor por consola.
      * @return Objeto Autor con el ID especificado.
      */
-    Autor getIdAutor() {
+    static Autor getIdAutor() {
         //k.nextLine();
         System.out.println("Introduce los datos del autor:");
         System.out.println("ID: ");
@@ -91,7 +91,7 @@ public class MenuAutores {
      * Este método sirve para obtener los datos del autor por consola.
      * @return Objeto Autor con los datos especificados.
      */
-    Autor getDatosAutor() {
+    private Autor getDatosAutor() {
         k.nextLine();
         System.out.println("Introduce los datos del autor:");
         System.out.println("Nombre: ");

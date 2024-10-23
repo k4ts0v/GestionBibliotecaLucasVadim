@@ -243,7 +243,7 @@ public class BibliotecaService {
      * -1 -> No realizado, ha habido algún error.
      * @throws Exception Lanza una excepción si no se ha borrado correctamente de la BD.
      */
-    private Integer anhadirLibroAutor(Libro l, Autor a) {
+    public Integer anhadirLibroAutor(Libro l, Autor a) {
         try {
             if(existeLibro(l) && existeAutor(a)) {
                 listaLibrosAutores.add(new LibroAutor(l.getId(), a.getId()));
@@ -254,6 +254,98 @@ public class BibliotecaService {
         }
         return -1;
     }
+
+    /**
+     * Este método lee una asignación de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha leído correctamente de la BD.
+     */
+    public Integer mostrarLibroAutor(Libro l, Autor a) {
+        try {
+            if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
+                LibroAutor laBD = laDAO.read(la);
+                System.out.println(la);
+                System.out.println(laBD.toString());
+                if (listaLibrosAutores.contains(laBD)) {
+                    System.out.println(laBD.toString());
+                    return 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al mostrar las asginaciones: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    /**
+     * Este método lee todas las asignaciones de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha leído correctamente de la BD.
+     */
+    public Integer mostrarTodosLibrosAutores() {
+        listaLibrosAutores.forEach(System.out::println);
+        return 1;
+    }
+
+    /**
+     * Este método actualiza una asignación de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha actualizado correctamente en la BD.
+     */
+    public Integer actualizarLibroAutor(Libro l, Autor a) {
+        try {
+            if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
+                if (laDAO.update(la) == 1) {
+                    listaLibrosAutores.remove(la);
+                    listaLibrosAutores.add(la);
+                    return 1;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar la asignación: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    /**
+     * Este método borra una asignación de un libro a un autor.
+     * @param l Libro de la asignación.
+     * @param a Autor de la asignación.
+     * @return Integer - Resultado de la operación:
+     * 1 -> Realizado correctamente.
+     * -1 -> No realizado, ha habido algún error.
+     * @throws Exception Lanza una excepción si no se ha borrado correctamente de la BD.
+     */
+    public Integer borrarLibroAutor(Libro l, Autor a) {
+        try {
+            if(existeLibro(l) && existeAutor(a)) {
+                LibroAutor la = new LibroAutor(a.getId(), l.getId());
+                if (laDAO.delete(la) == 1) {
+                    listaLibrosAutores.remove(la);
+                    return 1;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error al borrar la asignación: " + e.getMessage());
+        }
+        return -1;
+    }
+
     private Integer anhadirUsuario(Usuario u) {
         try {
             if (uDAO.create == 1)
@@ -421,5 +513,4 @@ public class BibliotecaService {
         }
         return false;
     }
-
 }

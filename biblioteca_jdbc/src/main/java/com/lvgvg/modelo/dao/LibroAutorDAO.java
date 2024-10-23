@@ -25,10 +25,10 @@ import com.lvgvg.modelo.dto.LibroAutor;
 public class LibroAutorDAO implements DAO<LibroAutor> {
     private Connection conexion = JDBC.getConexion();
     private final String CREATE = "INSERT INTO Libro_Autor VALUES(?,?)";
-    private final String READ = "SELECT * FROM Libro_Autor WHERE id = ?";
+    private final String READ = "SELECT * FROM Libro_Autor WHERE idLibro = ? AND idAutor = ?";
     private final String READALL = "SELECT * FROM Libro_Autor";
-    private final String UPDATE = "UPDATE Libro_Autor SET titulo=?, isbn=? WHERE id = ?";
-    private final String DELETE = "DELETE FROM Libro_Autor WHERE id = ?";
+    private final String UPDATE = "UPDATE Libro_Autor SET idLibro = ? idAutor = ? WHERE idLibro = ? AND idAutor = ?";
+    private final String DELETE = "DELETE FROM Libro_Autor WHERE idLibro = ? AND idAutor = ?";
 
     /**
      * Este método añade un libroAutor a la BD.
@@ -69,6 +69,7 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
                 return null;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new SQLException();
         }
     }
@@ -100,12 +101,14 @@ public class LibroAutorDAO implements DAO<LibroAutor> {
      * @throws SQLException Lanza una SQLException si no se ha podido actualizar el libroAutor.
      */
     @Override
-    public Integer update(LibroAutor l) throws SQLException {
+    public Integer update(LibroAutor la) throws SQLException { // TODO; corregir.
         try {
             PreparedStatement ps = conexion.prepareStatement(UPDATE);
-            LibroAutor alBD = read(l);
-            ps.setInt(1, alBD.getIdLibro());
-            ps.setInt(2, alBD.getIdAutor());
+            LibroAutor laBD = read(la);
+            ps.setInt(1, laBD.getIdLibro());
+            ps.setInt(2, laBD.getIdAutor());
+            ps.setInt(3, la.getIdLibro());
+            ps.setInt(4, la.getIdAutor());
             ps.execute();
             return 1;
         } catch (SQLException e) {

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 public class UsuarioDAO implements DAO<UsuarioDAO> {
     private Connection conexion = JDBC.getConexion();
-    private final String CREATE = "INSERT INTO Usuario VALUES(?)";
+    private final String CREATE = "INSERT INTO Usuario (nombre) VALUES(?)";
     private final String READ = "SELECT * FROM Usuario WHERE id = ?";
     private final String READALL = "SELECT * FROM Usuario";
     private final String UPDATE = "UPDATE Usuario SET nombre=? WHERE id = ?";
@@ -16,9 +16,17 @@ public class UsuarioDAO implements DAO<UsuarioDAO> {
 
     @Override
     public Integer create(Usuario u) throws SQLException{
-        PreparedStatement ps = conexion.prepareStatement(CREATE);
-        ps.setString(1, u.getNombre());
-        return ps.executeUpdate();
+        try {
+            PreparedStatement ps = conexion.prepareStatement(CREATE);
+            ps.setString(1, u.getNombre());
+            ps.executeUpdate();
+            return 1;
+        } catch(SQLException ) {
+            return new SQLException();
+        }
+        return -1;
+
+
     }
     @Override
     public Usuario read(Usuario u) throws SQLException {
@@ -44,6 +52,7 @@ public class UsuarioDAO implements DAO<UsuarioDAO> {
         } catch (SQLException e) {
             return new SQLException();
         }
+        return listaUsuarios;
 
     }
     @Override
@@ -53,8 +62,9 @@ public class UsuarioDAO implements DAO<UsuarioDAO> {
             ps.setString(1, u.getNombre());
             ps.setInt(2, u.getId());
             return ps.executeUpdate();
-        } catch (SQLException e)
+        } catch (SQLException e) {
             return new SQLException();
+        }
     }
     @Override
     public Integer delete(Usuarui u) throws SQLException {
@@ -62,8 +72,9 @@ public class UsuarioDAO implements DAO<UsuarioDAO> {
             PreparedStatement ps = conexion.prepareStatement(DELETE);
             ps.setInt(1, u.getId());
             return ps.executeUpdate();
-        } catch(SQLException e)
+        } catch(SQLException e) {
             return new SQLException;
+        }
     }
     public crearUsuario(ResultSet rs) {
         return new Usuario(rs.getString(2));

@@ -1,5 +1,7 @@
 package com.lvgvg.modelo.dto;
 
+import java.util.Objects;
+
 public class Prestamo {
     public int getId() {
         return id;

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.ArrayList;
+
+import com.lvgvg.modelo.dto.Prestamo;
 public class PrestamoDAO implements DAO<Prestamo> {
     private Connection conexion = JDBC.getConexion();
     private final String CREATE = "INSERT INTO Prestamo (fechaInicio, fechaFin, usuarioId, libroId) VALUES(?, ?, ?, ?)";
@@ -23,11 +25,11 @@ public class PrestamoDAO implements DAO<Prestamo> {
                 ps.setString(2, p.getFechaFin());
                 ps.setInt(3, p.getUsuarioId());
                 ps.setInt(4, p.getLibroId());
-                return 1
+                return 1;
             } catch (SQLException e) {
-                return new SQLException();
+                throw new SQLException();
             }
-            return -1
+            return -1;
 
     }
     @Override
@@ -43,16 +45,16 @@ public class PrestamoDAO implements DAO<Prestamo> {
         } return -1;
     }
     @Override
-    public ArrayList<Prestamo> readAll() {
+    public ArrayList<Prestamo> readAll() throws SQLException {
         ArrayList<Prestamo> listaPrestamo= new ArrayList<>();
         try {
         Statement st = conexion.createStatement();
         ResultSet rs = st.executeQuery(READALL);
-        while (rs.next) {
+        while (rs.next()) {
             listaPrestamo.add(crearPrestamo(rs));
         }
         } catch (SQLException e) {
-            return new SQLException();
+            throw new SQLException();
         }
         return listaPrestamo;
     }
@@ -60,29 +62,28 @@ public class PrestamoDAO implements DAO<Prestamo> {
     public Integer update(Prestamo p) {
         try {
             PreparedStatement ps = conexion.prepareStatement(UPDATE);
-            ps.setString(1, p.getFechaInicio();
+            ps.setString(1, p.getFechaInicio());
             ps.setString(2, p.getFechaFin());
             ps.setInt(3, p.getUsuarioId());
             ps.setInt(4, p.getLibroId());
             ps.setInt(5, p.getId());
             return ps.executeUpdate();
         } catch(SQLException e) {
-            return new SQLException();
+            throw new SQLException();
         }
         return -1;
     }
     @Override
-    public Integer delete(Prestamo p) {
+    public Integer delete(Prestamo p) throws SQLException {
         try {
         PreparedStatement ps = conexion.prepareStatement(DELETE);
         ps.setInt(1, p.getId());
         return ps.executeUpdate();
         } catch(SQLException e) {
-            return new SQLException();
+            throw new SQLException();
         }
-        return -1;
     }
-    public Prestamo crearPrestamo(ResultSet rs) {
-        return new Prestamo(rs.get)
+    public Prestamo crearPrestamo(ResultSet rs) throws SQLException {
+        return new Prestamo(rs.getInt(1), rs.getDate(2), rs.getDate(3));
     }
 }
